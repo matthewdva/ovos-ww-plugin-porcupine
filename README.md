@@ -1,9 +1,9 @@
-## Picovoice Porcupine Wakeword plugin for Mycroft
+## Picovoice Porcupine Wakeword plugin for OpenVoiceOS
 
-This plugins allows using [Porcupine](https://github.com/Picovoice/porcupine) wakewords together with Mycroft.
+This plugins allows using [Porcupine](https://github.com/Picovoice/porcupine) wakewords together with OpenVoiceOS.
 
 ## Configuration
-To activate the plugin edit the mycroft config using the `mycroft-config edit user` command and add a hotword section if it doesn't already exist
+To activate the plugin edit the mycroft config and add a hotword section if it doesn't already exist
 
 ```
 [...]
@@ -36,9 +36,11 @@ Porcupine ships precompiled binaries for several common platforms (x86 amd64, ra
 
 The original Mycroft bindings for Porcupine was written by @Tanel.Alumae, this plugin is based upon their initial work with some updates for newer Porcupine releases.
 
+Forked from https://github.com/forslund/mycroft-porcupine-plugin
 ### Contributors
 
 The following people are awesome and has helped with the development of this plugin:
 
 - builderjer
 - jarbasal
+- matthewdva

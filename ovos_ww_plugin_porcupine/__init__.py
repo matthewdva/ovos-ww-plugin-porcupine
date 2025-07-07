@@ -12,31 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Picovoice Porcupine wakeword plugin for Mycroft Core."""
+"""Picovoice Porcupine wakeword plugin for OpenVoiceOS."""
 from os.path import expanduser
 import struct
+import pvporcupine
 
 from ovos_plugin_manager.templates.hotwords import HotWordEngine
 from ovos_utils.log import LOG
 
 
-class PorcupineWakeword(HotWordEngine):
+class PorcupineHotwordPlugin(HotWordEngine):
     """Hotword engine using picovoice's Porcupine hot word engine."""
-    def __init__(self, key_phrase="hey mycroft", config=None, lang="en-us"):
-        super().__init__(key_phrase, config, lang)
+    def __init__(self, key_phrase="hey mycroft", config=None):
+        super().__init__(key_phrase, config)
         keyword_file_paths = [expanduser(x.strip()) for x in self.config.get(
             "keyword_file_path", "hey_mycroft.ppn").split(',')]
         sensitivities = self.config.get("sensitivities", 0.5)
         access_key = self.config.get("access_key", None)
-
-        try:
-            import pvporcupine
-            from pvporcupine.util import (pv_library_path,
-                                          pv_model_path)
-        except ImportError as err:
-            raise Exception(
-                "Python bindings for Porcupine not found. "
-                "Please run \"mycroft-pip install pvporcupine\"") from err
 
         if isinstance(sensitivities, float):
             sensitivities = [sensitivities] * len(keyword_file_paths)
@@ -78,7 +70,7 @@ class PorcupineWakeword(HotWordEngine):
             else:
                 return
 
-    def found_wake_word(self, frame_data):
+    def found_wake_word(self) -> bool:
         """Check if wakeword has been found.
 
         Returns:
@@ -88,11 +80,3 @@ class PorcupineWakeword(HotWordEngine):
             self.has_found = False
             return True
         return False
-
-    def stop(self):
-        """Stop the hotword engine.
-
-        Clean up Porcupine library.
-        """
-        if self.porcupine is not None:
-            self.porcupine.delete()
